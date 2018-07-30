@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>聊天框</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.15/vue.js"></script>
+    <style>
+        .chat{
+            width:300px;
+            height:400px;
+            border:1px solid black;
+            padding:5px;
+            /* display:flex;
+            flex-direction: column; */
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        .chat .item{
+            margin:10px 0;
+            display:flex;
+        }
+        .chat .item.mine{
+            justify-content: flex-end;
+        }
+        .chat .item .message{
+            background:greenyellow;
+            padding:5px;
+            display:inline-block;
+        }
+        .textarea{position:relative;}
+        .send{
+            position:absolute;right:0;bottom:0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="chat">
+            <div class="item"  :class="{mine: item.type == 'mine'}" v-for="item in message">
+                <div class="message">
+                    {{item.user}}说：{{item.content}}
+                </div>
+            </div>
+        </div>
+        <div class="textarea" style="width:310px;height:80px;">
+            <textarea name="" class="textarea" cols="41" rows="5" style="resize:none;" 
+                    v-model="inputtext">
+             </textarea>
+             <button type="button" class="send" @click="send">发送</button>
+        </div>
+    </div>
+    
+    
+    <script>
+       const vm=new Vue({
+            el:"#app",
+            data:{
+                message:[
+                    {
+                        user:"张三",
+                        content:"你好，有什么事儿吗？"
+                    },
+                    {
+                        user:"我",
+                        type:"mine",
+                        content:"你好,我有个问题。"
+                    }
+                ],
+                inputtext:""
+            },
+            methods:{
+                send()
+                {
+                    if(this.inputtext){
+                        this.message.push({
+                            user:"我",
+                            type:"mine",
+                            content:this.inputtext
+                        })
+                        this.inputtext="";
+                        setTimeout(()=>{
+                            this.message.push({
+                                user:"张三",
+                                content:"知道了！"
+                            }
+                            )
+                        })
+                    }
+                }            
+            }
+    })  
+    </script>
+   
+</body>
+</html>
